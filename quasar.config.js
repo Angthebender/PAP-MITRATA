@@ -87,8 +87,6 @@ module.exports = configure(function (/* ctx */) {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
-      config: {},
-
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
 
@@ -100,7 +98,22 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: ['Notify'], // Add 'Notify' to the plugins array
+      config: {
+        notify: {
+          // Your default notification configuration options here
+          position: 'top', // Default position (can be 'top', 'bottom', 'left', or 'right')
+          timeout: 3000, // Default timeout in milliseconds
+          textColor: 'white', // Default text color
+          backgroundColor: 'blue', // Default background color
+          type: 'positive', // Default notification type (can be 'positive', 'negative', 'warning', or 'info')
+          // Other available options:
+          // - html: Allow HTML content (use with caution)
+          // - icon: Set a custom icon
+          // - progress: Show a progress bar
+          // - closeButton: Allow users to dismiss the notification manually
+        },
+      },
     },
 
     // animations: 'all', // --- includes all animations

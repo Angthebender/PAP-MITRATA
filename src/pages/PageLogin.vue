@@ -54,40 +54,33 @@
     </q-page-container>
   </q-layout>
 </template>
-<script>
+<script setup>
 import { useRouter } from 'vue-router';
 import { supabase } from 'boot/supabase';
 
-export default {
-  data() {
-    return {
-      email: '',
-      password: '',
-      LoginError: false,
-    };
-  },
-  methods: {
-    async handleSubmit() {
-      const $router = useRouter();
-      this.error = null; // Clear any previous errors
+const router = useRouter();
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: this.email,
-        password: this.password,
-      });
+const email = '';
+const password = '';
+const LoginError = false;
 
-      if (error == 'AuthApiError: Invalid login credentials') {
-        console.log('invalid credentials');
-        this.LoginError = true;
-      } else {
-        // Login successful
-        this.LoginError = false;
-        console.log('Logged in user:', data);
-        console.log();
-        $router.push('/');
-      }
-    },
-  },
+const handleSubmit = async () => {
+  error = null; // Clear any previous errors
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: password,
+  });
+
+  if (error && error.message === 'AuthApiError: Invalid login credentials') {
+    console.log('invalid credentials');
+    LoginError.value = true;
+  } else {
+    // Login successful
+    LoginError.value = false;
+    console.log('Logged in user:', data);
+    router.push('/');
+  }
 };
 </script>
 <style>

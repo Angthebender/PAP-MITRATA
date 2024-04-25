@@ -72,40 +72,33 @@
   </q-layout>
 </template>
 
-<script>
+<script setup>
 import { supabase } from 'boot/supabase';
 
-export default {
-  data() {
-    return {
-      email: '',
-      username: '',
-      password: '',
-      dob: '',
-    };
-  },
-  methods: {
-    async handleSubmit() {
-      console.log('submitting..');
+const email = '';
+const username = '';
+const password = '';
+const dob = null; // use ref(null) for dates
 
-      const { data, error } = await supabase.auth.signUp({
-        email: this.email,
-        password: this.password,
-        options: {
-          data: {
-            username: this.username,
-            dob: this.dob,
-          },
-        },
-      });
+const handleSubmit = async () => {
+  console.log('submitting..');
 
-      if (error) {
-        console.log('error :', error);
-      } else {
-        console.log(data);
-      }
+  const { data, error } = await supabase.auth.signUp({
+    email: email.value,
+    password: password.value,
+    options: {
+      data: {
+        username: username.value,
+        dob: dob.value, // Use dob.value for date
+      },
     },
-  },
+  });
+
+  if (error) {
+    console.error(error); // Log the actual error object
+  } else {
+    console.log(data);
+  }
 };
 </script>
 

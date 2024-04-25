@@ -77,6 +77,8 @@ async function getUser() {
 
   if (!user || !user.data.session) {
     // You're not authenticated. Do stuff here like redirect to login
+    console.log('no user');
+
     $router.push('/login');
     return;
   }

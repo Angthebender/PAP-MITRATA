@@ -48,55 +48,35 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { date } from 'quasar';
 import { supabase } from 'boot/supabase';
 
-export default {
-  data() {
-    return {
-      username: '',
-      posts: [
-        {
-          id: 1,
-          caption: 'Golden Gate Bridge',
-          date: 1712695011621,
-          location: 'San Francisco, United Statees',
-          imageUrl: 'https://cdn.quasar.dev/img/parallax2.jpg',
-        },
-        {
-          id: 2,
-          caption: 'Golden Gate Bridge',
-          date: 1712695011621,
-          location: 'San Francisco, United Statees',
-          imageUrl: 'https://cdn.quasar.dev/img/parallax2.jpg',
-        },
-        {
-          id: 3,
-          caption: 'Golden Gate Bridge',
-          date: 1712695011621,
-          location: 'San Francisco, United Statees',
-          imageUrl: 'https://cdn.quasar.dev/img/parallax2.jpg',
-        },
-        {
-          id: 4,
-          caption: 'Golden Gate Bridge',
-          date: 1712695011621,
-          location: 'San Francisco, United Statees',
-          imageUrl: 'https://cdn.quasar.dev/img/parallax2.jpg',
-        },
-      ],
-    };
+const posts = [
+  {
+    id: 1,
+    caption: 'Golden Gate Bridge',
+    date: 1712695011621,
+    location: 'San Francisco, United Statees',
+    imageUrl: 'https://cdn.quasar.dev/img/parallax2.jpg',
   },
-  methods: {
-    niceDate(value) {
-      return date.formatDate(value, 'MMMM D h:mmA');
-    },
-    async seeCurrentUser() {
-      const account = ref();
-      account.value = await supabase.auth.getSession();
-    },
+  {
+    id: 2,
+    caption: 'Golden Gate Bridge',
+    date: 1712695011621,
+    location: 'San Francisco, United Statees',
+    imageUrl: 'https://cdn.quasar.dev/img/parallax2.jpg',
   },
+  // ... other posts
+];
+
+const niceDate = (value) => {
+  return date.formatDate(value, 'MMMM D h:mmA');
+};
+
+const seeCurrentUser = async () => {
+  const account = ref(null); // Use ref(null) for potentially empty data
+  account.value = await supabase.auth.getSession();
 };
 </script>
 
