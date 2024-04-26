@@ -14,7 +14,9 @@
   </q-layout>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+console.log('using authicationlayout');
+</script>
 
 <style lang="scss">
 .q-toolbar__title {

@@ -74,31 +74,38 @@
 
 <script setup>
 import { supabase } from 'boot/supabase';
+import { ref } from 'vue';
 
-const email = '';
-const username = '';
-const password = '';
-const dob = null; // use ref(null) for dates
+const email = ref('');
+const username = ref('');
+const password = ref('');
+const dob = ref(null); // use ref(null) for dates
 
 const handleSubmit = async () => {
   console.log('submitting..');
 
-  const { data, error } = await supabase.auth.signUp({
-    email: email.value,
-    password: password.value,
-    options: {
-      data: {
-        username: username.value,
-        dob: dob.value, // Use dob.value for date
+  supabase.auth
+    .signUp({
+      email: email.value,
+      password: password.value,
+      options: {
+        data: {
+          username: username.value,
+          dob: dob.value, // Use dob.value for date
+        },
       },
-    },
-  });
+    })
 
-  if (error) {
-    console.error(error); // Log the actual error object
-  } else {
-    console.log(data);
-  }
+    .then(({ data, error }) => {
+      if (error) {
+        console.error(error); // Log the actual error object
+      } else {
+        console.log(data);
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error); // Handle other potential errors here
+    });
 };
 </script>
 

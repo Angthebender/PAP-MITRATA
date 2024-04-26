@@ -57,30 +57,38 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { supabase } from 'boot/supabase';
+import { ref } from 'vue';
 
 const router = useRouter();
 
-const email = '';
-const password = '';
-const LoginError = false;
+const email = ref('');
+const password = ref('');
+const LoginError = ref(false);
+const error = ref('');
 
 const handleSubmit = async () => {
-  error = null; // Clear any previous errors
-
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: email,
-    password: password,
-  });
-
-  if (error && error.message === 'AuthApiError: Invalid login credentials') {
-    console.log('invalid credentials');
-    LoginError.value = true;
-  } else {
-    // Login successful
-    LoginError.value = false;
-    console.log('Logged in user:', data);
-    router.push('/');
-  }
+  error.value = '';
+  supabase.auth
+    .signInWithPassword({
+      email: email.value,
+      password: password.value,
+    })
+    .then(({ data, error }) => {
+      if (error && error.message === 'Invalid login credentials') {
+        console.log('invalid credentials');
+        LoginError.value = true;
+      } else {
+        // Login successful
+        LoginError.value = false;
+        console.log('valid credentials');
+        console.log('Logged in user:', data);
+        router.push('/');
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      // Handle other potential errors here
+    });
 };
 </script>
 <style>

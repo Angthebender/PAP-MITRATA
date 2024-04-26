@@ -67,6 +67,7 @@
 </template>
 
 <script setup lang="ts">
+console.log('using mainlayout');
 import { useRouter } from 'vue-router';
 import { supabase } from 'boot/supabase';
 const $router = useRouter();
@@ -78,7 +79,6 @@ async function getUser() {
   if (!user || !user.data.session) {
     // You're not authenticated. Do stuff here like redirect to login
     console.log('no user');
-
     $router.push('/login');
     return;
   }
