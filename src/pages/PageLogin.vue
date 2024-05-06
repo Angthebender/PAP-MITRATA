@@ -8,11 +8,13 @@
             <div class="text-grey-8">Sign in below to access your account</div>
           </q-card-section>
           <q-card-section>
-            <p v-show="LoginError" class="text-red-6">Incorrect Credentials</p>
+            <p v-if="store.LoginError" class="text-red-6">
+              Invalid Credentials
+            </p>
             <q-input
               dense
               outlined
-              v-model="email"
+              v-model="store.email"
               label="Email Address"
               type="email"
             ></q-input>
@@ -20,7 +22,7 @@
               dense
               outlined
               class="q-mt-md"
-              v-model="password"
+              v-model="store.password"
               type="password"
               label="Password"
             ></q-input>
@@ -34,7 +36,7 @@
               label="Sign in"
               type="submit"
               no-caps
-              @click="handleSubmit()"
+              @click="store.handleSubmit()"
               class="full-width"
             />
           </q-card-section>
@@ -54,43 +56,27 @@
     </q-page-container>
   </q-layout>
 </template>
+
 <script setup>
+import { useAuthenticationstore } from 'stores/AuthenticationStore.ts';
 import { useRouter } from 'vue-router';
-import { supabase } from 'boot/supabase';
-import { ref } from 'vue';
+import { watch } from 'vue';
 
-const router = useRouter();
+const $router = useRouter();
+const store = useAuthenticationstore();
 
-const email = ref('');
-const password = ref('');
-const LoginError = ref(false);
-const error = ref('');
-
-const handleSubmit = async () => {
-  error.value = '';
-  supabase.auth
-    .signInWithPassword({
-      email: email.value,
-      password: password.value,
-    })
-    .then(({ data, error }) => {
-      if (error && error.message === 'Invalid login credentials') {
-        console.log('invalid credentials');
-        LoginError.value = true;
-      } else {
-        // Login successful
-        LoginError.value = false;
-        console.log('valid credentials');
-        console.log('Logged in user:', data);
-        router.push('/');
-      }
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      // Handle other potential errors here
-    });
-};
+// Watch for successful login and navigate to the home page
+watch(
+  () => store.loginSuccess,
+  (newValue) => {
+    if (newValue) {
+      $router.push('/'); // Redirect upon login success
+      store.loginSuccess = false; // Reset the flag to prevent repeated redirects
+    }
+  }
+);
 </script>
+
 <style>
 .my_card {
   width: 25rem;
@@ -102,3 +88,4 @@ const handleSubmit = async () => {
   display: none;
 }
 </style>
+src/stores/AuthenticationStore

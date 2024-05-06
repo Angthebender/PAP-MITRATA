@@ -13,7 +13,7 @@
             <q-input
               dense
               outlined
-              v-model="email"
+              v-model="store.email"
               label="Email Address"
               type="email"
             ></q-input>
@@ -21,7 +21,7 @@
               dense
               outlined
               class="q-mt-md"
-              v-model="username"
+              v-model="store.username"
               type="username"
               label="username"
             ></q-input>
@@ -30,7 +30,7 @@
               dense
               outlined
               class="q-mt-md"
-              v-model="password"
+              v-model="store.password"
               type="password"
               label="Password"
             ></q-input>
@@ -38,7 +38,7 @@
               dense
               outlined
               class="q-mt-md"
-              v-model="dob"
+              v-model="store.dob"
               type="date"
               label="Date of birth"
             ></q-input>
@@ -52,7 +52,7 @@
               label="Create account"
               no-caps
               class="full-width"
-              @click="handleSubmit()"
+              @click="store.CreateAccount()"
             ></q-btn>
           </q-card-section>
           <q-card-section class="text-center q-pt-none">
@@ -73,40 +73,8 @@
 </template>
 
 <script setup>
-import { supabase } from 'boot/supabase';
-import { ref } from 'vue';
-
-const email = ref('');
-const username = ref('');
-const password = ref('');
-const dob = ref(null); // use ref(null) for dates
-
-const handleSubmit = async () => {
-  console.log('submitting..');
-
-  supabase.auth
-    .signUp({
-      email: email.value,
-      password: password.value,
-      options: {
-        data: {
-          username: username.value,
-          dob: dob.value, // Use dob.value for date
-        },
-      },
-    })
-
-    .then(({ data, error }) => {
-      if (error) {
-        console.error(error); // Log the actual error object
-      } else {
-        console.log(data);
-      }
-    })
-    .catch((error) => {
-      console.error('Error:', error); // Handle other potential errors here
-    });
-};
+import { useAuthenticationstore } from 'stores/AuthenticationStore.ts';
+const store = useAuthenticationstore();
 </script>
 
 <style>

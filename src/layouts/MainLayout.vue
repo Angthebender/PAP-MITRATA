@@ -73,15 +73,20 @@ import { supabase } from 'boot/supabase';
 const $router = useRouter();
 
 getUser();
-async function getUser() {
-  const user = await supabase.auth.getSession();
 
-  if (!user || !user.data.session) {
-    // You're not authenticated. Do stuff here like redirect to login
-    console.log('no user');
-    $router.push('/login');
-    return;
-  }
+function getUser() {
+  supabase.auth
+    .getSession()
+    .then((session) => {
+      if (!session || !session.data.session) {
+        // You're not authenticated. Do stuff here like redirect to login
+        console.log('no user');
+        $router.push('/login');
+      }
+    })
+    .catch((error) => {
+      console.error('Error getting session:', error); // Handle other errors
+    });
 }
 </script>
 

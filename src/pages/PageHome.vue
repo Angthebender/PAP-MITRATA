@@ -39,7 +39,9 @@
           </q-item-section>
           <q-item-section>
             <a href="/profile"
-              ><q-item-label v-if="username"> {{ username }}</q-item-label></a
+              ><q-item-label
+                ><p v-if="username">{{ Username }}</p>
+              </q-item-label></a
             >
             <q-item-label caption> Norden sherpa </q-item-label>
           </q-item-section>
@@ -55,7 +57,8 @@ import { date } from 'quasar';
 import { supabase } from 'boot/supabase';
 import { ref } from 'vue';
 
-const username = ref('');
+const Username = ref('');
+const account = ref('');
 const posts = [
   {
     id: 1,
@@ -78,29 +81,11 @@ const niceDate = (value) => {
   return date.formatDate(value, 'MMMM D h:mmA');
 };
 
-const seeCurrentUser = () => {
-  const account = ref(null); // Use ref(null) for potentially empty data
-
-  supabase.auth
-    .getSession()
-    .then((session) => {
-      account.value = session;
-
-      if (account.value && account.value.user && account.value.user.username) {
-        username.value = account.value.user.username; // Assuming username is a ref
-        console.log('the username is ', username.value);
-      } else {
-        console.log('No user logged in or username not available');
-
-        // Handle the case where no user is logged in or username is missing
-      }
-    })
-    .catch((error) => {
-      console.error('Error:', error); // Handle other potential errors
-    });
-};
-
-seeCurrentUser();
+getSession();
+async function getSession() {
+  account.value = await supabase.auth.getSession();
+  Username.value = account.value.data.session.user.metadata.username;
+}
 </script>
 
 <style>
