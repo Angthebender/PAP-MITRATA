@@ -1,0 +1,45 @@
+{
+  "users": {
+    "USERID1": {
+      "username": "ATOM",
+      "email": "usatenk@gmail.com",
+      "online": true
+    },
+    "USERID2": {
+      "username": "BIG NORD",
+      "email": "nord@gmail.com",
+      "online": true
+    },
+    "USERID3": {
+      "username": "YANG",
+      "email": "yang@gmail.com",
+      "online": true
+    }
+  },
+  "chats": {
+    "USERID1": {
+      "USERID2": {
+        "MESSAGEID1": {
+          "text": "hi wassup",
+          "from": "them"
+        },
+        "MESSAGEID2": {
+          "text": "all good wassup",
+          "from": "me"
+        }
+      }
+    },
+    "USERID2": {
+      "USERID1": {
+        "MESSAGEID1": {
+          "text": "hi wassup",
+          "from": "me"
+        },
+        "MESSAGEID2": {
+          "text": "all good wassup",
+          "from": "them"
+        }
+      }
+    }
+  }
+}
